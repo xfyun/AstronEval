@@ -1,0 +1,11 @@
+{
+  "name": "astroneval",
+  "version": "1.0.0",
+  "description": "Skill 评测插件。引导用户对本地 Skill 进行自动化评测，支持单 Skill 验证、多 Skill 横评、多模型横评、运行框架横评等场景。",
+  "author": {
+    "name": "njuxumq",
+    "email": "njuxumq@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": ["evaluation", "skill", "testing", "benchmark"]
+}

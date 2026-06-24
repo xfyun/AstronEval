@@ -1,0 +1,196 @@
+---
+name: model-selection
+description: Use when in build phase and need to select driver model or judge model from platform recommendations or custom sources
+---
+
+# 模型选择流程
+
+本流程定义如何从云端模型或自定义模型中选择驱动模型与评委模型。
+
+---
+
+## 触发条件
+
+- 阶段2 任务3（驱动模型）或任务4（评委模型）调用
+
+---
+
+## 上下文区分
+
+| 用途 | 列表接口 | 数量 | 模型来源 | 展示方式 |
+|------|----------|------|----------|----------|
+| 驱动模型 | `usage=candidate` | 单选或多选（按场景） | 云端模型 / 自定义模型 | 直接展示列表，**禁止推荐** |
+| 评委模型 | `usage=judge` | 单选 | 云端模型 / 自定义模型 | 先推荐一个（排除已选驱动模型），用户确认或重选 |
+
+**模型来源说明**：
+- **云端模型**：平台提供的模型，用户无需配置 API Key
+- **自定义模型**：用户自行配置的模型，需提供 API Key 和 API URL
+
+> ⚠️ 不要把 `usage`、`source`、`recommend_model_id`、`limited_free` 等内部字段展示给用户。
+> ⚠️ `TokenPlan`、`EvalPlan`、`candidate`、`judge` 等接口/字段名是开发态表述，**不得在用户可见输出中出现**——对用户称"云端模型"或"自定义模型"。
+
+---
+
+## 选择流程
+
+### 步骤1：拉取模型列表
+
+后台静默调用 `models` 命令：
+
+```bash
+# 驱动模型列表
+{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" models \
+  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+  --scene skill --usage candidate
+
+# 评委模型列表
+{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" models \
+  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+  --scene skill --usage judge
+```
+
+同时后台静默读取 `{work-dir}/.eval/custom-models.json`（按 `usage` 过滤），获取历史自定义模型。
+
+### 步骤2：展示候选模型
+
+**根据用途区分展示方式**：
+
+#### 驱动模型：直接展示可选列表
+
+> ⚠️ **禁止推荐**：驱动模型列表不得标注"（推荐）"或类似标记，用户需根据自身需求自由选择。
+
+将云端模型按 `display_name` 字母顺序排序后展示，最后一行为"自定义模型"选项：
+
+> **可选驱动模型：**
+>
+> | 序号 | 模型 |
+> |:----:|------|
+> | 1 | DeepSeek-V3 |
+> | 2 | GLM-4.5 |
+> | 3 | GLM-5 |
+> | ... | ... |
+> | N | 自定义模型 |
+
+询问语句根据评测场景决定的驱动模型数量：
+
+| 评测场景 | 需选择数量 | 询问语句 |
+|------|------|------|
+| 快速效果验证、同类 Skill 横评、Skill 版本对比、A/B Test | 1 个 | `请选择驱动模型（输入序号）：` |
+| 驱动模型横评 | ≥2 个（多选） | `请选择驱动模型（输入序号，可多选，逗号分隔，至少 2 个）：` |
+
+#### 评委模型：平台先推荐，用户确认或重选
+
+**选择流程**：
+
+1. **明确已选驱动模型**：先读取用户在任务3中选择的驱动模型（如 `GLM-5.1`）
+2. **拉取评委候选列表**：调用 `models --usage judge` 获取评委模型列表
+3. **按名称排序**：评委候选列表按 `display_name` 字母顺序排序
+4. **排除已选驱动模型**：从排序后的列表中排除已选驱动模型（按 `display_name` 精确匹配）
+5. **取第一个作为推荐**：排除后的列表第一个作为推荐评委
+
+> ⚠️ **重要**：排序 → 排除 → 推荐，顺序不可颠倒。
+>
+> **示例**：评委候选列表为 `[GLM-5.1, Qwen3.5-397B-A17B]`，排序后仍为 `[GLM-5.1, Qwen3.5-397B-A17B]`（G < Q）。用户选择了 `GLM-5.1` 作为驱动模型，排除后变为 `[Qwen3.5-397B-A17B]`，推荐 `Qwen3.5-397B-A17B`。
+
+向用户展示推荐并询问：
+
+> **推荐评委模型**：{推荐模型 display_name}
+>
+> 是否使用该评委模型？
+>
+> | 选项 | |
+> |:----:|--|
+> | 1 | 确认使用 |
+> | 2 | 选择其他模型 |
+
+| 用户选择 | 后续动作 |
+|----------|----------|
+| 1 - 确认使用 | 直接选中该模型，跳过步骤3，进入步骤4 |
+| 2 - 选择其他 | 进入下方"可选评委模型列表" |
+
+用户选择"选择其他模型"时，展示完整列表（同样排除已选驱动模型）：
+
+> **可选评委模型：**
+>
+> | 序号 | 模型 |
+> |:----:|------|
+> | 1 | {模型1 display_name} |
+> | 2 | {模型2 display_name} |
+> | ... | ... |
+> | N | 自定义模型 |
+>
+> 请选择评委模型（输入序号）：
+
+### 步骤3：处理用户选择
+
+| 用户选择 | 后续动作 |
+|----------|----------|
+| 选中云端模型（序号 1 ~ N-1） | 进入步骤4 |
+| 选"自定义模型"（序号 N） | 进入步骤3.1 |
+
+#### 步骤3.1：自定义模型处理
+
+若有历史自定义模型，先展示历史列表：
+
+> **历史自定义{驱动/评委}模型**
+>
+> | 序号 | 模型 ID |
+> |:----:|---------|
+> | 1 | model-1 |
+> | 2 | model-2 |
+> | 3 | 添加新模型 |
+>
+> 请选择（{多选场景：可多选，逗号分隔}）：
+
+| 用户选择 | 后续动作 |
+|----------|----------|
+| 选中已有模型 | 进入步骤4 |
+| 选"添加新模型" | 进入步骤3.2 |
+
+若没有历史自定义模型，直接进入步骤3.2。
+
+#### 步骤3.2：添加新模型
+
+分三步依次向用户询问，每步一个问题：
+
+1. `请提供自定义{驱动/评委}模型的模型 ID：`
+2. `请提供自定义{驱动/评委}模型的 API URL：`
+3. `请提供自定义{驱动/评委}模型的 API Key：`
+
+> ⚠️ 不要将三个字段合并为一次询问，用户难以一次性准确输出全部信息。
+
+用户提供后，后台静默保存到 `custom-models.json`：
+
+```bash
+{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" custom-models \
+  --work-dir "{work-dir}" \
+  --action add --usage {candidate|judge} \
+  --model-id {id} --api-key {key} --api-url {url}
+```
+
+然后进入步骤4。
+
+### 步骤4：补充内部字段
+
+为选中的模型补充内部字段：
+
+| 来源 | 补充字段 |
+|------|----------|
+| 云端模型 | `source: "limited_free"`、`recommend_model_id`（取自原对象的 `id` 字段） |
+| 自定义 | `source: "custom"` |
+
+供后续 `build-models` 使用。这些字段不展示给用户。
+
+### 步骤5：回显
+
+> 已选{驱动模型/评委模型}：GLM-5、DeepSeek-V3
+
+---
+## 输出
+
+| 变量 | 说明 |
+|------|------|
+| `{driver-models}` | 驱动模型对象数组（含 `source` 字段） |
+| `{judge-model}` | 评委模型对象（含 `source` 字段） |
+
+后续在阶段4 步骤2 通过 `build-models` 命令转换为 `eval-models.json` 与 `eval-judge.json`。
