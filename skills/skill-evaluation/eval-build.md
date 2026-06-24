@@ -11,6 +11,13 @@ description: Use when initialization completed and ready to configure evaluation
 
 核心原则：**用户视角隐藏实现，关键确认不可跳过**。
 
+**术语约束**（本阶段涉及模型选择，以下内部术语禁止向用户暴露）：
+
+| 用户可见 | 禁止暴露 |
+|----------|----------|
+| 云端模型、自定义模型 | `TokenPlan`、`EvalPlan`、`limited_free` |
+| 驱动模型、评委模型 | `candidate`、`judge`、`usage`、`source` |
+
 **前置验证**：Token 有效；评测场景已确认。验证失败则返回初始化阶段。
 
 ---

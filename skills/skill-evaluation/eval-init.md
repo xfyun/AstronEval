@@ -5,26 +5,8 @@ description: Use when starting a new skill evaluation task or resuming an existi
 
 # 初始化阶段
 
-## ⚠️ 入口流程铁律
 
-**进入本阶段后，第一件事是调用 TodoWrite 更新阶段1进度**，然后静默执行鉴权检查。
-
-### 步骤0：更新进度
-
-**无论用户输入是什么，立即调用 TodoWrite**：
-
-```
-TodoWrite([
-  { content: "确认评测场景", status: "in_progress", activeForm: "检查登录状态" },
-  { content: "配置评测对象", status: "pending", activeForm: "配置评测对象" },
-  { content: "准备评测数据", status: "pending", activeForm: "准备评测数据" },
-  { content: "提交并查看报告", status: "pending", activeForm: "提交并查看报告" }
-])
-```
-
-> ⚠️ **content 字段必须固定为上述 4 个阶段名称**。
-
-### 步骤1：静默鉴权
+## 静默鉴权
 
 **后台静默执行 Token 检查**，不输出任何提示。
 
