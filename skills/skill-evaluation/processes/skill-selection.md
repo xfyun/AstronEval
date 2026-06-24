@@ -64,8 +64,8 @@ description: Use when in build phase and need to search, identify dependencies, 
 >
 > 是否选用此 Skill？
 >
-> | 选项 | |
-> |:----:|--|
+> | 选项 | 说明 |
+> |:----:|------|
 > | 1 | 是，继续 |
 > | 2 | 否，重新输入 Skill 名称 |
 
@@ -107,8 +107,8 @@ description: Use when in build phase and need to search, identify dependencies, 
 >
 > 是否一并打包？
 >
-> | 选项 | |
-> |:----:|--|
+> | 选项 | 说明 |
+> |:----:|------|
 > | 1 | 是 |
 > | 2 | 否 |
 

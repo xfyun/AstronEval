@@ -200,8 +200,8 @@ description: Use when initialization completed and ready to configure evaluation
 >
 > 是否使用该评委模型？
 >
-> | 选项 | |
-> |:----:|--|
+> | 选项 | 说明 |
+> |:----:|------|
 > | 1 | 确认使用 |
 > | 2 | 选择其他模型 |
 

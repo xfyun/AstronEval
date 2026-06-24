@@ -98,8 +98,8 @@ description: Use when in build phase and need to select driver model or judge mo
 >
 > 是否使用该评委模型？
 >
-> | 选项 | |
-> |:----:|--|
+> | 选项 | 说明 |
+> |:----:|------|
 > | 1 | 确认使用 |
 > | 2 | 选择其他模型 |
 

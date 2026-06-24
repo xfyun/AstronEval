@@ -57,8 +57,8 @@ description: Use when dataset prepared and ready to submit, monitor or display e
 >
 > 确认以上配置，提交评测任务？
 >
-> | 选项 | |
-> |:----:|--|
+> | 选项 | 说明 |
+> |:----:|------|
 > | 1 | 提交任务 |
 > | 2 | 修改配置 |
 
@@ -173,13 +173,10 @@ description: Use when dataset prepared and ready to submit, monitor or display e
 
 运行框架：{runtime-type}
 
-┌──────────┬──────────┐
-│ 驱动模型 │ 通过率   │
-├──────────┼──────────┤
-│ {模型1}  │ {rate}%  │
-├──────────┼──────────┤
-│ {模型2}  │ {rate}%  │
-└──────────┴──────────┘
+| 驱动模型 | 通过率 |
+|----------|--------|
+| {模型1} | {rate}% |
+| {模型2} | {rate}% |
 
 执行总耗时：{total-duration}
 
@@ -191,13 +188,10 @@ description: Use when dataset prepared and ready to submit, monitor or display e
 ```
 📊 评测结果摘要
 
-┌──────────────┬──────────┐
-│ 运行框架     │ 通过率   │
-├──────────────┼──────────┤
-│ Claude Code  │ {rate}%  │
-├──────────────┼──────────┤
-│ OpenClaw     │ {rate}%  │
-└──────────────┴──────────┘
+| 运行框架 | 通过率 |
+|----------|--------|
+| Claude Code | {rate}% |
+| OpenClaw | {rate}% |
 
 执行总耗时：{total-duration}
 
