@@ -54,7 +54,3 @@ claude --plugin-dir /path/to/skill-evaluation-plugin
 
 - Python 3.8+
 - Claude Code CLI
-
-## 许可证
-
-MIT
