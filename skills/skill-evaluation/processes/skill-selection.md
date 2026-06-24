@@ -30,7 +30,7 @@ description: Use when in build phase and need to search, identify dependencies, 
 后台静默执行搜索（同时查本地 + 云端）：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" search-skill --name "{skill-name}" --work-dir "{work-dir}"
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" search-skill --name "{skill-name}" --work-dir "{work-dir}"
 ```
 
 **JSON 解析注意**：搜索结果中本地路径字段（如 `path`）需经过 JSON 解析后再展示，**不要对路径字符串做任何二次处理**，否则 Windows 路径中的 `\\` 会被折叠为 `\`。
@@ -74,7 +74,7 @@ description: Use when in build phase and need to search, identify dependencies, 
 用户选定 Skill 后，立即后台静默创建会话目录：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" session \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" session \
   --work-dir "{work-dir}" \
   --action create \
   --skill-name "{skill-name}"
@@ -129,16 +129,16 @@ description: Use when in build phase and need to search, identify dependencies, 
 
 **单目录打包上传**：
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" package \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" package \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --skill-dir "{target-skill-dir}" \
   --output-dir "{work-dir}/.eval/{session-id}"
 ```
 
 **父 + 协同/依赖（合成单 zip）**：
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" package \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" package \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --skill-dir "{parent-skill-dir}" \
   --extra-skills "{dep-dir-1},{dep-dir-2}" \
   --output-dir "{work-dir}/.eval/{session-id}"
@@ -146,8 +146,8 @@ description: Use when in build phase and need to search, identify dependencies, 
 
 **直接上传已有 zip**（云端下载或用户提供）：
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" package \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" package \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --skill-zip "{skill-zip-path}" \
   --output-dir "{work-dir}/.eval/{session-id}"
 ```

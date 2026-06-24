@@ -39,13 +39,13 @@ description: Use when in build phase and need to select driver model or judge mo
 
 ```bash
 # 驱动模型列表
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" models \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" models \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --scene skill --usage candidate
 
 # 评委模型列表
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" models \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" models \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --scene skill --usage judge
 ```
 
@@ -162,7 +162,7 @@ description: Use when in build phase and need to select driver model or judge mo
 用户提供后，后台静默保存到 `custom-models.json`：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" custom-models \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" custom-models \
   --work-dir "{work-dir}" \
   --action add --usage {candidate|judge} \
   --model-id {id} --api-key {key} --api-url {url}

@@ -48,17 +48,17 @@ description: Use when in dataset phase and need to validate, convert, upload cus
 1. `convert-excel`：验证并转换 Excel → `eval-dataset.json`
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" convert-excel \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" convert-excel \
   --file "{excel-path}" \
   --output "{work-dir}/.eval/{session-id}/eval-dataset.json" \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg"
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg"
 ```
 
 2. `upload-dataset`：上传到云端，写入 `eval-dataset-meta.json`（含 `dataset-id`）
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" upload-dataset \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" upload-dataset \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --dataset "{work-dir}/.eval/{session-id}/eval-dataset.json" \
   --output "{work-dir}/.eval/{session-id}/eval-dataset-meta.json"
 ```
@@ -70,7 +70,7 @@ description: Use when in dataset phase and need to validate, convert, upload cus
 后台静默执行 `check-dataset` 命令检查字段完整性：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" check-dataset \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" check-dataset \
   --dataset "{work-dir}/.eval/{session-id}/eval-dataset.json"
 ```
 
@@ -94,8 +94,8 @@ description: Use when in dataset phase and need to validate, convert, upload cus
 1. `datamaker`：提交合成任务，写入 `eval-datamaker.json`
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" datamaker \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" datamaker \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --skill-names {skill-name-1},{skill-name-2} \
   --skill-urls {skill-zip-url-1},{skill-zip-url-2} \
   --dataset-id {dataset-id} \
@@ -105,8 +105,8 @@ description: Use when in dataset phase and need to validate, convert, upload cus
 2. `datamaker-status`：轮询合成结果（间隔 30 秒，超时 1 小时），写入 `eval-datamaker-result.json`
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" datamaker-status \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" datamaker-status \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --id {datamaker-id} \
   --output "{work-dir}/.eval/{session-id}/eval-datamaker-result.json" \
   --poll --interval 30 --timeout 3600
@@ -135,8 +135,8 @@ description: Use when in dataset phase and need to validate, convert, upload cus
 1. `datamaker`：提交合成任务，写入 `eval-datamaker.json`
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" datamaker \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" datamaker \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --skill-names {skill-name-1},{skill-name-2} \
   --skill-urls {skill-zip-url-1},{skill-zip-url-2} \
   --output "{work-dir}/.eval/{session-id}/eval-datamaker.json"
@@ -145,8 +145,8 @@ description: Use when in dataset phase and need to validate, convert, upload cus
 2. `datamaker-status`：轮询合成结果（间隔 30 秒，超时 1 小时），写入 `eval-datamaker-result.json`
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" datamaker-status \
-  --config "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/cfg/eval-server.cfg" \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" datamaker-status \
+  --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --id {datamaker-id} \
   --output "{work-dir}/.eval/{session-id}/eval-datamaker-result.json" \
   --poll --interval 30 --timeout 3600
