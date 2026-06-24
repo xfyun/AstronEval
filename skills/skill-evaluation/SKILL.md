@@ -38,7 +38,7 @@ version: 1.0.0
 
 ## 不可延迟约束
 
-Skill 触发后，首先 Read 加载 [输出行为规范.md](./references/输出行为规范.md)，**加载完毕前禁止任何用户可见输出**。
+Skill 触发后，首先 Read 加载 [输出行为规范.md](./references/输出行为规范.md) 和 [进度展示规范.md](./references/进度展示规范.md)，**加载完毕前禁止任何用户可见输出**。
 
 全程约束（完整定义见输出行为规范.md）：
 
@@ -91,9 +91,21 @@ Read 加载输出行为规范 → 静默鉴权
 
 | 变量 | 说明 | 示例 |
 |------|------|------|
-| `$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation` | 本技能目录绝对路径（由插件系统自动解析） | `~/.claude/plugins/astroneval/skills/skill-evaluation` |
+| `{skill-dir}` | 本技能目录绝对路径 | `/home/user/.claude/plugins/astroneval/skills/skill-evaluation` |
 | `{work-dir}` | 当前工作目录 | `/path/to/project` |
 | `{python-cmd}` | Python 可执行文件 | `python` 或 `python3` |
 | `{session-id}` | 本次评测会话 ID | `20260518_143022_xxx` |
 
+### 变量解析规则
+
+所有 `{...}` 变量均为**占位符**，不是 shell 环境变量。构造 Bash 命令前必须先将占位符替换为实际值：
+
+| 变量 | 解析方式 |
+|------|----------|
+| `{skill-dir}` | 取 SKILL.md 所在目录的绝对路径（即本文件的父目录） |
+| `{work-dir}` | 取用户当前工作目录 |
+| `{python-cmd}` | 检测系统可用的 Python 命令（`python3` 优先，回退 `python`） |
+
+> ⚠️ 禁止将 `{skill-dir}` 等占位符直接传入 Bash。必须先解析为绝对路径，再拼入命令字符串。
+>
 > Windows 路径注意：构造 shell 命令时，所有包含路径的参数必须用双引号包裹。

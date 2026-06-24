@@ -74,7 +74,7 @@ description: Use when starting a new skill evaluation task or resuming an existi
 后台静默执行：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" check-token --auth-file "{work-dir}/.eval/auth.json"
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" check-token --auth-file "{work-dir}/.eval/auth.json"
 ```
 
 | 输出 status | 说明 | 后续动作 |
@@ -89,7 +89,7 @@ description: Use when starting a new skill evaluation task or resuming an existi
 后台静默执行：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" login --auth-file "{work-dir}/.eval/auth.json"
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" login --auth-file "{work-dir}/.eval/auth.json"
 ```
 
 | 输出 status | 说明 | 后续动作 |
@@ -108,7 +108,7 @@ description: Use when starting a new skill evaluation task or resuming an existi
 等待用户输入授权码后，后台静默调用 `token` 子命令完成登录：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" token \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" token \
   --auth-file "{work-dir}/.eval/auth.json" \
   --code "{user-input-code}" \
   --state-token "{state-token}"
@@ -139,7 +139,7 @@ description: Use when starting a new skill evaluation task or resuming an existi
 后台静默执行：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" recent-tasks --work-dir "{work-dir}" --limit 5
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" recent-tasks --work-dir "{work-dir}" --limit 5
 ```
 
 按下方格式展示：

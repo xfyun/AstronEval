@@ -142,7 +142,7 @@ description: Use when initialization completed and ready to configure evaluation
 后台静默调用 `build-runtimes` 命令，生成 `eval-runtimes.json`：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" build-runtimes \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" build-runtimes \
   --output-dir "{work-dir}/.eval/{session-id}" \
   --runtimes {runtime-type-1},{runtime-type-2}
 ```
@@ -230,7 +230,7 @@ description: Use when initialization completed and ready to configure evaluation
 后台静默调用 `build-models` 命令，生成 `eval-models.json` 与 `eval-judge.json`：
 
 ```bash
-{python-cmd} "$CLAUDE_PLUGIN_ROOT/skills/skill-evaluation/scripts/eval_skill.py" build-models \
+{python-cmd} "{skill-dir}/scripts/eval_skill.py" build-models \
   --output-dir "{work-dir}/.eval/{session-id}" \
   --judge-json '{judge-model-object-json}' \
   --models-json '{driver-models-array-json}' \
