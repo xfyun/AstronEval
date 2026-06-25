@@ -1,0 +1,20 @@
+{
+  "name": "AstronEval",
+  "interface": {
+    "displayName": "AstronEval - Skill 自动化评测"
+  },
+  "plugins": [
+    {
+      "name": "astroneval",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

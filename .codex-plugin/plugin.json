@@ -1,0 +1,6 @@
+{
+  "name": "astroneval",
+  "version": "1.0.0",
+  "description": "评测插件。引导用户对本地或云端 Skill 进行自动化评测，支持单 Skill 验证、多 Skill 横评、多模型横评、运行框架横评等场景。",
+  "skills": "./skills/"
+}
