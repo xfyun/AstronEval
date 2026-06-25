@@ -1,0 +1,5 @@
+{
+  "name": "AstronEval",
+  "description": "Skill 自动化评测插件市场",
+  "plugins": ["astroneval"]
+}

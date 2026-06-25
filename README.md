@@ -6,21 +6,32 @@ Claude Code 插件：Skill 自动化评测。
 
 ## 评测场景
 
-| 场景 | 说明 | Skill 数量 | 驱动模型数量 |
-|------|------|:----------:|:------------:|
-| 快速效果验证 | 验证单个 Skill 在指定模型下的执行效果 | 1 | 1 |
-| 同类 Skill 横评 | 对比多个功能相似 Skill 的表现差异 | 多个 | 1 |
-| 驱动模型横评 | 同一 Skill 在不同模型驱动下的效果对比 | 1 | 多个 |
-| Skill 版本对比 | 同一 Skill 不同版本的 A/B 测试 | 多个 | 1 |
-| 运行框架横评 | 同一 Skill 在不同运行框架下的表现对比 | 1 | 1（多框架） |
+| 场景 | 说明 | Skill 数量 | 驱动模型数量 | 运行时 Agent 数量 |
+|------|------|:----------:|:------------:|:------------:|
+| 快速效果验证 | 验证单个 Skill 在指定模型下的执行效果 | 1 | 1 | 1 |
+| 同类 Skill 横评 | 对比多个功能相似 Skill 的表现差异 | 多个 | 1 | 1 |
+| 驱动模型横评 | 同一 Skill 在不同模型驱动下的效果对比 | 1 | 多个 | 1 |
+| Skill 版本对比 | 同一 Skill 不同版本的 A/B 测试 | 多个 | 1 | 1 |
+| 运行框架横评 | 同一 Skill 在不同运行框架下的表现对比 | 1 | 1 | 多个 |
 
 ## 安装
 
-通过 Claude Code 插件市场安装：
+通过 GitHub 仓库安装
 
 ```bash
-claude plugins install astroneval
+# 注册 marketplace
+claude plugins marketplace add https://github.com/xfyun/AstronEval.git
+
+# 安装插件
+claude plugins install astroneval@AstronEval
 ```
+
+通过 npm 安装
+
+```bash
+npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21
+```
+
 
 本地开发测试：
 
@@ -33,7 +44,7 @@ claude --plugin-dir /path/to/skill-evaluation-plugin
 ### 斜杠命令
 
 ```
-/skill-evaluation
+/astroneval:skill-evaluation
 ```
 
 ### 自然语言触发
