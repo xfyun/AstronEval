@@ -16,7 +16,9 @@ Claude Code 插件：Skill 自动化评测。
 
 ## 安装
 
-通过 GitHub 仓库安装
+### Claude Code
+
+通过 GitHub 仓库安装（推荐）
 
 ```bash
 # 注册 marketplace
@@ -32,11 +34,44 @@ claude plugins install astroneval@AstronEval
 npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21
 ```
 
-
-本地开发测试：
+本地开发测试
 
 ```bash
 claude --plugin-dir /path/to/skill-evaluation-plugin
+```
+
+### CodeX
+
+通过 GitHub 仓库安装（推荐）
+
+```bash
+# 注册 marketplace
+codex plugin marketplace add https://github.com/xfyun/AstronEval.git
+
+# 安装插件
+codex plugin install astroneval@AstronEval
+```
+
+通过 npm 安装
+
+```bash
+npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21 --codex
+```
+
+### OpenClaw
+
+> OpenClaw暂不支持当前的插件形式，只能安装裸技能。
+
+通过 npm 安装
+
+```bash
+npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21 --openclaw
+```
+
+通过 clawHub 安装
+
+```bash
+openclaw skills install @njuxumq/skill-evaluation
 ```
 
 ## 使用
