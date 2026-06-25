@@ -76,15 +76,17 @@ openclaw skills install @njuxumq/skill-evaluation
 
 ## 使用
 
-### 斜杠命令
+### 命令触发
 
-```
-/astroneval:skill-evaluation
-```
+| 平台 | 触发命令 |
+|------|----------|
+| Claude Code | `/astroneval:skill-evaluation` |
+| CodeX | `@skill-evaluation` |
+| OpenClaw | `/skill_evaluation` |
 
 ### 自然语言触发
 
-在对话中描述评测意图即可自动激活：
+在对话中描述评测意图即可自动激活（所有平台通用）：
 
 - "评测下 xxx Skill"
 - "对比 skill-A 和 skill-B"
