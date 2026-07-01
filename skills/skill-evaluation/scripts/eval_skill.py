@@ -824,15 +824,22 @@ LOCAL_SEARCH_SKIP_DIRS = {
     "dist", "build", "target", "out", ".next", ".cache",
     "AppData", "OneDrive", "Library", ".npm", ".gradle", ".m2",
 }
+LOCAL_SEARCH_FUZZY_THRESHOLD = 0.6
 
 
 def _search_local_skill(name: str, work_dir: Path) -> list:
-    """在 work_dir 和 ~/.claude/skills 下查找 SKILL.md 同名 Skill 目录。
+    """在 work_dir 和 ~/.claude/skills 下查找 Skill 目录。
 
+    渐进式匹配策略：精确 → 子串（大小写不敏感） → 相似度。
     手动遍历 + 深度剪枝，避免 rglob 把整个家目录扫穿。
     """
-    candidates = []
+    from difflib import SequenceMatcher
+
+    exact_matches = []
+    substring_matches = []
+    fuzzy_matches = []
     seen_path = set()
+    name_lower = name.lower()
 
     raw_roots = [work_dir, Path.home() / ".claude" / "skills"]
     resolved_roots = []
@@ -860,11 +867,21 @@ def _search_local_skill(name: str, work_dir: Path) -> list:
         for entry in entries:
             try:
                 if entry.is_file():
-                    if entry.name == "SKILL.md" and current.name == name:
+                    if entry.name == "SKILL.md":
+                        dir_name = current.name
                         resolved = str(current.resolve())
-                        if resolved not in seen_path:
-                            seen_path.add(resolved)
-                            candidates.append({"source": "local", "name": name, "path": resolved})
+                        if resolved in seen_path:
+                            continue
+                        seen_path.add(resolved)
+
+                        if dir_name == name:
+                            exact_matches.append({"source": "local", "name": dir_name, "path": resolved, "match_type": "exact"})
+                        elif not exact_matches and name_lower in dir_name.lower():
+                            substring_matches.append({"source": "local", "name": dir_name, "path": resolved, "match_type": "substring"})
+                        elif not exact_matches and not substring_matches:
+                            ratio = SequenceMatcher(None, name_lower, dir_name.lower()).ratio()
+                            if ratio >= LOCAL_SEARCH_FUZZY_THRESHOLD:
+                                fuzzy_matches.append({"source": "local", "name": dir_name, "path": resolved, "match_type": "fuzzy", "score": round(ratio, 2)})
                     continue
                 if not entry.is_dir():
                     continue
@@ -882,7 +899,12 @@ def _search_local_skill(name: str, work_dir: Path) -> list:
     for root in resolved_roots:
         walk(root, 0)
 
-    return candidates
+    if exact_matches:
+        return exact_matches
+    if substring_matches:
+        return substring_matches
+    fuzzy_matches.sort(key=lambda x: x["score"], reverse=True)
+    return fuzzy_matches
 
 
 def _probe_cloud_skill(name: str) -> dict:

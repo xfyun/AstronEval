@@ -43,24 +43,33 @@ description: Use when in build phase and need to search, identify dependencies, 
 | 仅一条 | 展示该结果并询问是否选用（见下方"仅一条结果"格式） |
 | 零条 | 告知"本地与云端均未找到 Skill「{skill-name}」"，提示改用方式 2 或换名称 |
 
+**措辞选择**（根据搜索结果 `match_type` 字段）：
+
+| match_type | 引导句 |
+|------------|--------|
+| `exact` 或云端结果 | `找到名称为「{skill-name}」的 Skill：` |
+| `substring` / `fuzzy` | `找到与「{skill-name}」相似的 Skill：` |
+
+> 本地结果同一批次内 match_type 相同；云端结果始终视为精确匹配。若本地为近似结果且同时有云端结果，使用近似匹配的引导句。
+
 **多条结果**：
 
-> 找到名称为「{skill-name}」的 Skill：
+> {引导句}
 >
-> | 选项 | 来源 | 位置 |
-> |:----:|------|------|
-> | 1 | 本地 | ~/.claude/skills/{skill-name} |
-> | 2 | 云端 | https://clawhub.ai/ |
+> | 选项 | 来源 | 名称 | 位置 |
+> |:----:|------|------|------|
+> | 1 | 本地 | {result.name} | {result.path} |
+> | 2 | 云端 | {skill-name} | https://clawhub.ai/ |
 >
 > 请选择（输入序号）：
 
 **仅一条结果**：
 
-> 找到名称为「{skill-name}」的 Skill：
+> {引导句}
 >
-> | 来源 | 位置 |
-> |------|------|
-> | {本地 / 云端} | {本地路径 或 https://clawhub.ai/} |
+> | 来源 | 名称 | 位置 |
+> |------|------|------|
+> | {本地 / 云端} | {result.name} | {本地路径 或 https://clawhub.ai/} |
 >
 > 是否选用此 Skill？
 >
