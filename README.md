@@ -31,7 +31,7 @@ claude plugins install astroneval@AstronEval
 通过 npm 安装
 
 ```bash
-npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21
+npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@1.0.1
 ```
 
 本地开发测试
@@ -55,7 +55,7 @@ codex plugin install astroneval@AstronEval
 通过 npm 安装
 
 ```bash
-npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21 --codex
+npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@1.0.1 --codex
 ```
 
 ### OpenClaw
@@ -65,7 +65,7 @@ npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron
 通过 npm 安装
 
 ```bash
-npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@0.4.21 --openclaw
+npx -y --registry=https://depend.iflytek.com/artifactory/api/npm/npm-repo astron-eval@1.0.1 --openclaw
 ```
 
 通过 clawHub 安装
