@@ -58,7 +58,7 @@ description: Use when build phase completed and need to prepare evaluation datas
 | 上下文已知信息 | 进入的分支 |
 |---------------|----------|
 | 已提供本地 Excel 路径（.xlsx） | 步骤2 → [dataset-prepare.md 分支 A：自定义 Excel 上传](./processes/dataset-prepare.md#分支-a自定义-excel-上传) |
-| 用户明确要求"自动合成"/"平台生成" | 步骤2 → [dataset-prepare.md 分支 B：平台自动合成](./processes/dataset-prepare.md#分支-b平台自动合成) |
+| 用户明确要求"自动合成"/"平台生成" | 步骤1.5（样例数确认）→ 步骤2 → [dataset-prepare.md 分支 B：平台自动合成](./processes/dataset-prepare.md#分支-b平台自动合成) |
 
 否则向用户展示：
 
@@ -68,6 +68,17 @@ description: Use when build phase completed and need to prepare evaluation datas
 > |:----:|------|------|
 > | 1 | 上传自定义评测集 | 我已有业务场景数据，通过文件上传 |
 > | 2 | 平台自动合成数据 | 我没有业务场景数据，需平台自动合成 |
+
+#### 步骤1.5：确认样例数（仅平台自动合成路径）
+
+进入分支 B 前，**若上下文未提供样例数**，向用户询问：
+
+> 需要合成多少条样例？（留空则由平台自动决定）
+
+- 用户填写正整数 → 记录为 `{sample-count}`，`datamaker` 时传入 `--count {sample-count}`
+- 用户留空或跳过 → 不传 `--count`，由平台自动决定数量
+
+**自动填充**：若上下文中已包含样例数（如用户在选择来源时一并说明），直接沿用，跳过本步骤。
 
 #### 步骤2：执行评测集准备子流程
 

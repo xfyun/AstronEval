@@ -101,7 +101,7 @@ description: Use when starting a new skill evaluation task or resuming an existi
 
 向用户展示：
 
-> 请访问登录链接完成授权，然后输入授权码：
+> 请访问登录链接完成授权（有效期 10 分钟），然后输入授权码：
 >
 > {login_url}
 

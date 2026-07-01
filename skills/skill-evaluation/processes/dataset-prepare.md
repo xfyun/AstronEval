@@ -99,6 +99,7 @@ description: Use when in dataset phase and need to validate, convert, upload cus
   --skill-names {skill-name-1},{skill-name-2} \
   --skill-urls {skill-zip-url-1},{skill-zip-url-2} \
   --dataset-id {dataset-id} \
+  [--count {sample-count}] \
   --output "{work-dir}/.eval/{session-id}/eval-datamaker.json"
 ```
 
@@ -139,6 +140,7 @@ description: Use when in dataset phase and need to validate, convert, upload cus
   --config "{skill-dir}/scripts/cfg/eval-server.cfg" \
   --skill-names {skill-name-1},{skill-name-2} \
   --skill-urls {skill-zip-url-1},{skill-zip-url-2} \
+  [--count {sample-count}] \
   --output "{work-dir}/.eval/{session-id}/eval-datamaker.json"
 ```
 

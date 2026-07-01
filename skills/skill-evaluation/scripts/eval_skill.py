@@ -1135,6 +1135,8 @@ def cmd_datamaker(args):
     }
     if args.dataset_id:
         payload["dataset_id"] = args.dataset_id
+    if args.count is not None:
+        payload["count"] = args.count
 
     try:
         client = _make_client(cfg, auth_file)
@@ -1914,6 +1916,7 @@ def main():
     p.add_argument("--skill-names", required=True, help="skill 名称，多个以逗号分隔（顺序与 --skill-urls 对齐）")
     p.add_argument("--skill-urls", required=True, help="skill zip 包 URL，多个以逗号分隔（顺序与 --skill-names 对齐）")
     p.add_argument("--dataset-id", default="", help="评测集 ID（可选）")
+    p.add_argument("--count", type=int, default=None, help="期望合成的样例数（可选）")
     p.add_argument("--output", default="", help="结果输出文件（可选）")
     _add_auth_file_arg(p)
     p.set_defaults(func=cmd_datamaker)
